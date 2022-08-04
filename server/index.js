@@ -7,11 +7,13 @@ const userRoute = require("./routes/users.js");
 const postRoute = require("./routes/posts.js");
 const categoryRoute = require("./routes/categories.js");
 const multer = require("multer");
+const path = require("path");
 var cors = require('cors')
 
 dotenv.config();
 app.use(express.json());
 app.use(cors())
+app.use("/images", express.static(path.join(__dirname,"/images")))
 
 // mongoose.connect(process.env.MONGO_URL);
 
@@ -20,6 +22,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
     // useCreateIndex: true,
+    // useFindAndModify:true
   })
   .then(console.log("Connected to MongoDB")).catch;
 (err) => console.log(err);
@@ -29,7 +32,7 @@ const storage = multer.diskStorage({
     cb(null, "images");
   },
   filename: (req, file, cb) => {
-    cb(null, "spyxfamily.jpg");
+    cb(null, req.body.name);
   },
 });
 
